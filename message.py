@@ -210,3 +210,6 @@ def image_carousel_message1():
     return message
 
 #關於LINEBOT聊天內容範例
+
+        
+        

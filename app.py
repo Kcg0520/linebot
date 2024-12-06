@@ -20,7 +20,7 @@ import tempfile, os
 import datetime
 import time
 #======python的函數庫==========
-
+import myfitnesspal
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 # Channel Access Token
@@ -48,7 +48,7 @@ def callback():
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    msg = event.message.text
+    msg = event.message.text #message from user
     if '最新合作廠商' in msg:
         message = imagemap_message()
         line_bot_api.reply_message(event.reply_token, message)
@@ -66,6 +66,11 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, message)
     elif '功能列表' in msg:
         message = function_list()
+        line_bot_api.reply_message(event.reply_token, message)
+    elif'大麥克' in msg:
+        client = myfitnesspal.Client()
+        food_items = client.get_food_search_results("麥當勞 大麥克")
+        message = TextSendMessage(text=food_items)
         line_bot_api.reply_message(event.reply_token, message)
     else:
         message = TextSendMessage(text=msg)
